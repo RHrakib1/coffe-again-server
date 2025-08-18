@@ -32,14 +32,19 @@ async function run() {
         const coffecollection = database.collection("coffeCollection");
 
 
+        app.get('/postcoffedata', async (req, res) => {
+            const findcoffe = coffecollection.find()
+            const result = await findcoffe.toArray()
+            res.send(result)
+        })
 
-app.post('/postcoffedata', async(res,req)=>{
-    const data = req.body
-    console.log('data peyesi post kora data',data)
-    const result = await coffecollection.insertOne(data)
-    res.send(result)
+        app.post('/postcoffedata', async (req, res) => {
+            const data = req.body
+            console.log('data peyesi post kora data', data)
+            const result = await coffecollection.insertOne(data)
+            res.send(result)
 
-})
+        })
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
