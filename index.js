@@ -38,6 +38,33 @@ async function run() {
             res.send(result)
         })
 
+        app.get(`/postcoffedata/:id`, async (req, res) => {
+            const id = req.params.id
+            const quary = { _id: new ObjectId(id) }
+            const result = await coffecollection.findOne(quary)
+            res.send(result)
+        })
+
+        app.put('/postcoffedata/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: new ObjectId(id) }
+            const options = { upset: true };
+            const updatecoffe = req.body;
+            const coffe = {
+                $set: {
+                    name: updatecoffe.name,
+                    able: updatecoffe.able,
+                    supply: updatecoffe.supply,
+                    catagory: updatecoffe.catagory,
+                    photourl: updatecoffe.photourl
+                }
+            };
+            const result = coffecollection.updateOne(filter, coffe, options)
+            res.send(result)
+
+        })
+
+
         app.post('/postcoffedata', async (req, res) => {
             const data = req.body
             console.log('data peyesi post kora data', data)
@@ -52,6 +79,7 @@ async function run() {
             const result = await coffecollection.deleteOne(quary)
             res.send(result)
         })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
