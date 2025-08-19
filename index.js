@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 //midelware
@@ -43,7 +43,14 @@ async function run() {
             console.log('data peyesi post kora data', data)
             const result = await coffecollection.insertOne(data)
             res.send(result)
-
+            console.log("Insert result:", result);
+        })
+        app.delete('/postcoffedata/:id', async (req, res) => {
+            const id = req.params.id
+            console.log('database deletet id hare:::', id)
+            const quary = { _id: new ObjectId(id) }
+            const result = await coffecollection.deleteOne(quary)
+            res.send(result)
         })
 
         // Send a ping to confirm a successful connection
